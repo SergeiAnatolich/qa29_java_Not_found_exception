@@ -2,6 +2,7 @@ import org.junit.jupiter.api.Test;
 import ru.netology.domain.Book;
 import ru.netology.domain.Product;
 import ru.netology.domain.Smartphone;
+import ru.netology.exception.AlreadyExistsException;
 import ru.netology.exception.NotFoundException;
 import ru.netology.repository.ProductRepository;
 
@@ -18,6 +19,7 @@ class ProductRepositoryTest {
     private Smartphone smartphone1 = new Smartphone(4, "3310", 1000, "Nokia");
     private Smartphone smartphone2 = new Smartphone(5, "Galaxy", 1200, "Samsung");
     private Smartphone smartphone3 = new Smartphone(6, "Xperia", 1150, "Sony");
+    private Smartphone smartphone4 = new Smartphone(5, "Note", 1400, "Samsung");
 
     @Test
     public void shouldSaveOneBook() {
@@ -40,14 +42,26 @@ class ProductRepositoryTest {
     }
 
     @Test
-    public void shouldSaveTwoProduct() {
-        repository.save(book);
-        repository.save(smartphone);
+    void shouldSaveSeveralProduct() {
 
-        Product[] expected = new Product[]{book, smartphone};
+        repository.save(book1);
+        repository.save(book2);
+        repository.save(book3);
+        repository.save(smartphone1);
+        repository.save(smartphone2);
+        repository.save(smartphone3);
+
+        Product[] expected = new Product[]{book1, book2, book3, smartphone1, smartphone2, smartphone3};
         Product[] actual = repository.findAll();
 
         assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldSaveProductRepeatedId() {
+        repository.save(smartphone2);
+
+        assertThrows(AlreadyExistsException.class, () -> repository.save(smartphone4));
     }
 
     @Test
