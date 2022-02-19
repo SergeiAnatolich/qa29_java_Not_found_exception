@@ -9,7 +9,7 @@ public class ProductRepository {
     private Product[] products = new Product[0];
 
     public void save(Product newProduct) {
-        if(products.length == 0) {
+        if (products.length == 0) {
             Product[] tmp = new Product[products.length + 1];
             System.arraycopy(products, 0, tmp, 0, products.length);
             tmp[tmp.length - 1] = newProduct;
@@ -22,9 +22,9 @@ public class ProductRepository {
                 System.arraycopy(products, 0, tmp, 0, products.length);
                 tmp[tmp.length - 1] = newProduct;
                 products = tmp;
-                }
             }
         }
+    }
 
     public Product[] findAll() {
         return products;
